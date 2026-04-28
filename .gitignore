@@ -1,6 +1,10 @@
 # Maven build output
 /target/
 
+# JADE runtime generated files
+/APDescription.txt
+/MTPs-Main-Container.txt
+
 # IDE files
 .idea/
 *.iml

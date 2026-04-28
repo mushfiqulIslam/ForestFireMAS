@@ -1,4 +1,5 @@
 import jade.core.Agent;
+import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -27,7 +28,18 @@ public class AssessmentAgent extends Agent {
 
                 String severityScore = assessSeverity(fireZoneData);
                 System.out.println("[AssessmentAgent][AUTONOMOUS_DECISION] Severity assessed: " + severityScore);
-                System.out.println("[AssessmentAgent] Assessment complete. inReplyTo=" + msg.getReplyWith());
+
+                ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
+                reply.addReceiver(new AID("ResourceCoordinationAgent", AID.ISLOCALNAME));
+                reply.setOntology(Protocol.ONTOLOGY);
+                reply.setConversationId(Protocol.CID_INFORM_SEVERITY);
+                String traceId = "trace-assess-" + System.currentTimeMillis();
+                reply.setReplyWith(traceId);
+                reply.setInReplyTo(msg.getReplyWith());
+                reply.setContent(severityScore);
+                send(reply);
+
+                System.out.println("[AssessmentAgent] InformSeverity sent. inReplyTo=" + msg.getReplyWith() + ", replyWith=" + traceId);
             } else {
                 block();
             }
