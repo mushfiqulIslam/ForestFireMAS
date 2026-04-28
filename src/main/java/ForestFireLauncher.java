@@ -20,6 +20,16 @@ public class ForestFireLauncher {
 
         AgentContainer mainContainer = rt.createMainContainer(profile);
 
+        AgentController assessmentAgent = mainContainer.createNewAgent(
+            "AssessmentAgent",
+            "AssessmentAgent",
+            new Object[]{}
+        );
+        assessmentAgent.start();
+        System.out.println("AssessmentAgent started.");
+
+        Thread.sleep(500);
+
         AgentController detectionAgent = mainContainer.createNewAgent(
             "DetectionAgent",
             "DetectionAgent",
