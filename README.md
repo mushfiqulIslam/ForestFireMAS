@@ -2,9 +2,12 @@
 
 This version is a one-agent runnable JADE prototype for easy cloning and testing.
 
-## Agent
+## Agents
 
 - `DetectionAgent`: simulates fire detection and makes an autonomous decision based on scenario input.
+- `AssessmentAgent`: receives fire zone report and autonomously assesses severity level (CRITICAL / MODERATE / LOW).
+- `ResourceCoordinationAgent`: receives severity report and autonomously allocates firefighting resources and selects response plan.
+- `ResponseAgent`: receives response plan and autonomously decides and dispatches the appropriate emergency action.
 
 ## Run (WSL)
 
