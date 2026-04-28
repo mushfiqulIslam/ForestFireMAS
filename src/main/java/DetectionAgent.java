@@ -1,5 +1,7 @@
 import jade.core.Agent;
+import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.lang.acl.ACLMessage;
 
 public class DetectionAgent extends Agent {
 
@@ -25,7 +27,17 @@ public class DetectionAgent extends Agent {
             String fireZoneData = buildFireZoneData(scenario);
             System.out.println("[DetectionAgent][AUTONOMOUS_DECISION] Trigger fire report for scenario=" + scenario);
             System.out.println("[DetectionAgent] Fire detected! Data: " + fireZoneData);
-            System.out.println("[DetectionAgent] Local simulation complete (single-agent mode).");
+
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            msg.addReceiver(new AID("AssessmentAgent", AID.ISLOCALNAME));
+            msg.setOntology(Protocol.ONTOLOGY);
+            msg.setConversationId(Protocol.CID_REPORT_FIRE_ZONE);
+            String traceId = "trace-detect-" + System.currentTimeMillis();
+            msg.setReplyWith(traceId);
+            msg.setContent(fireZoneData);
+            send(msg);
+
+            System.out.println("[DetectionAgent] ReportFireZone sent to AssessmentAgent. replyWith=" + traceId);
         }
 
         private String buildFireZoneData(String scenario) {
