@@ -26,3 +26,17 @@ Thumbs.db
 
 # Keep JADE runtime jar tracked for reproducible setup
 # (do NOT ignore /lib/jade-4.5.0.jar)
+
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+.venv
+venv/
+env/
+
+# CrewAI / LangChain cache
+.cache/
+chroma_db/
