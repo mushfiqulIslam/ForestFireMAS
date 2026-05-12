@@ -1,3 +1,2 @@
 crewai==0.80.0
-langchain-community==0.3.9
-langchain-ollama==0.2.3
+setuptools==69.5.1
