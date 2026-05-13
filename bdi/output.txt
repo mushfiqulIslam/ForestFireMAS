@@ -1,0 +1,930 @@
+
+████████████████████████████████████████████████████████████
+  ForestFireMAS — BDI Extension
+████████████████████████████████████████████████████████████
+
+
+████████████████████████████████████████████████████████████
+  RUNNING SCENARIO 1 — Standard Single-Zone Response
+████████████████████████████████████████████████████████████
+  [BELIEF] DetectionAgent                 sensor_status: <undefined>  →  ONLINE
+  [BELIEF] DetectionAgent                 active_zones: <undefined>  →  0
+  [BELIEF] DetectionAgent                 last_report: <undefined>  →  NONE
+  [BELIEF] AssessmentAgent                pending_zones: <undefined>  →  0
+  [BELIEF] AssessmentAgent                last_severity: <undefined>  →  NONE
+  [BELIEF] AssessmentAgent                uncertainty_flag: <undefined>  →  False
+  [BELIEF] ResourceCoordinationAgent      helicopters_available: <undefined>  →  3
+  [BELIEF] ResourceCoordinationAgent      ground_crews_available: <undefined>  →  5
+  [BELIEF] ResourceCoordinationAgent      water_tankers_available: <undefined>  →  4
+  [BELIEF] ResourceCoordinationAgent      resource_conflict: <undefined>  →  False
+  [BELIEF] ResponseAgent                  dispatch_orders_issued: <undefined>  →  0
+  [BELIEF] ResponseAgent                  evacuations_ordered: <undefined>  →  0
+  [BELIEF] ResponseAgent                  last_dispatch_zone: <undefined>  →  NONE
+
+════════════════════════════════════════════════════════════
+  SCENARIO 1 — Standard Single-Zone Response  [START]
+════════════════════════════════════════════════════════════
+FIRE INCIDENT REPORT — SCENARIO 1
+──────────────────────────────────
+Zone ID       : SectorC
+GPS           : 62.2426° N, 25.7473° E
+Temperature   : 68 °C (sensor array average)
+Smoke density : 340 µg/m³
+Wind speed    : 12 km/h (north-east)
+Humidity      : 28 %
+Nearest town  : Jyväskylä (11 km south-west)
+Fuel moisture : 9 % (dry understory)
+Time of day   : 14:32 local
+
+
+════════════════════════════════════════════════════════════
+  Belief Updates — Pre-Crew
+════════════════════════════════════════════════════════════
+  [BELIEF] DetectionAgent                 active_zones: 0  →  1
+  [BELIEF] DetectionAgent                 zone_id: <undefined>  →  SectorC
+  [BELIEF] DetectionAgent                 zone_intensity: <undefined>  →  MODERATE
+  [BELIEF] DetectionAgent                 wind_speed_kmh: <undefined>  →  12
+  [BELIEF] DetectionAgent                 humidity_pct: <undefined>  →  28
+  [BELIEF] AssessmentAgent                pending_zones: 0  →  1
+  [BELIEF] AssessmentAgent                zone_id: <undefined>  →  SectorC
+  [BELIEF] AssessmentAgent                proximity_km: <undefined>  →  11
+  [BELIEF] ResourceCoordinationAgent      zones_needing_resources: <undefined>  →  1
+  [BELIEF] ResourceCoordinationAgent      resource_conflict: False  →  False
+  [BELIEF] ResponseAgent                  evacuation_required: <undefined>  →  False
+
+════════════════════════════════════════════════════════════
+  CrewAI Pipeline — Executing
+════════════════════════════════════════════════════════════
+[1m[95m# Agent:[00m [1m[92mDetectionAgent[00m
+[95m## Task:[00m [92m            You have received the following raw sensor data. Analyse it and produce
+            a structured detection report.
+
+            FIRE INCIDENT REPORT — SCENARIO 1
+──────────────────────────────────
+Zone ID       : SectorC
+GPS           : 62.2426° N, 25.7473° E
+Temperature   : 68 °C (sensor array average)
+Smoke density : 340 µg/m³
+Wind speed    : 12 km/h (north-east)
+Humidity      : 28 %
+Nearest town  : Jyväskylä (11 km south-west)
+Fuel moisture : 9 % (dry understory)
+Time of day   : 14:32 local
+
+
+            Your report MUST include:
+            1. Confirmed zone ID and GPS coordinates
+            2. Intensity classification: LOW / MODERATE / HIGH / CRITICAL
+            3. Spread risk assessment: STABLE / GROWING / EXTREME
+            4. Confidence level (0–100 %) based on sensor agreement
+            5. One-sentence summary for downstream agents
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mDetectionAgent[00m
+[95m## Final Answer:[00m [92m
+FIRE INCIDENT REPORT — SCENARIO 1
+──────────────────────────────────
+Zone ID: SectorC
+GPS: 62.2426° N, 25.7473° E
+Intensity Classification: MODERATE (Temperature: 68 °C, Smoke density: 340 µg/m³)
+Spread Risk Assessment: GROWING (Wind speed: 12 km/h north-east, Fuel moisture: 9 % dry understory)
+Confidence Level (0–100 %): 85 % (based on sensor agreement)
+One-sentence summary for downstream agents: A moderate fire in SectorC with growing spread risk, located at 62.2426° N, 25.7473° E; wind is blowing from the north-east and understory is dry.[00m
+
+
+[1m[95m# Agent:[00m [1m[92mAssessmentAgent[00m
+[95m## Task:[00m [92mReview the detection report from DetectionAgent for SectorC.
+Apply wildfire severity classification rules and produce an assessment.
+
+Severity rules (apply all that match, take the highest):
+- CRITICAL : intensity HIGH/CRITICAL AND nearest town < 5 km
+- HIGH     : intensity HIGH OR spread risk EXTREME
+- MODERATE : intensity MODERATE AND spread risk STABLE/GROWING
+- LOW      : intensity LOW AND humidity > 40 %
+- UNCERTAIN: conflicting sensors OR missing key fields
+
+Your output MUST include:
+1. Final severity label
+2. Key factors driving the decision (bullet list)
+3. Recommended resource tier: LIGHT / MEDIUM / HEAVY
+4. Any UNCERTAIN flags and what data is missing
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mAssessmentAgent[00m
+[95m## Final Answer:[00m [92m
+**Severity Label:** MODERATE
+**Key Factors Driving the Decision:**
+• Intensity Classification: MODERATE (Temperature: 68 °C, Smoke density: 340 µg/m³)
+• Spread Risk Assessment: GROWING (Wind speed: 12 km/h north-east, Fuel moisture: 9 % dry understory)
+**Recommended Resource Tier:** MEDIUM
+**UNCERTAIN Flags and Missing Data:** None
+
+Note that the fire is classified as MODERATE due to its intensity classification and growing spread risk. The recommended resource tier is MEDIUM because a moderate fire requires a moderate level of resources for suppression. There are no UNCERTAIN flags or missing data in this report, so all fields are accounted for.[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResourceCoordinationAgent[00m
+[95m## Task:[00m [92mAllocate firefighting resources for SectorC based on the assessment.
+
+Available assets (current inventory):
+- Helicopters    : 3  (each can carry 2 000 L water)
+- Ground crews   : 5  (each 8-person team with hand tools + pump)
+- Water tankers  : 4  (each 10 000 L capacity)
+
+There is only ONE active zone (SectorC). No resource conflict exists.
+Allocate what is proportionate to the assessed severity tier.
+
+Your output MUST include:
+1. Assets assigned to SectorC (unit type + quantity)
+2. Assets held in reserve (with reason)
+3. Estimated suppression time
+4. Any constraints or risks to the plan
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResourceCoordinationAgent[00m
+[95m## Final Answer:[00m [92m
+**Allocation Table:**
+
+| **Asset Type** | **Quantity Deployed** | **Quantity Held in Reserve** |
+| --- | --- | --- |
+| Helicopters | 2 | 1 (held in reserve to ensure flexibility) |
+| Ground crews | 3 | 2 (held in reserve to account for potential changes in fire behavior) |
+| Water tankers | 2 | 2 (held in reserve to maintain a buffer against unexpected demands) |
+
+**Estimated Suppression Time:**
+
+* Based on the MEDIUM resource tier and MODERATE severity label, we estimate that it will take approximately 4-6 hours to suppress the fire.
+
+**Constraints or Risks to the Plan:**
+
+* The primary constraint is the limited availability of resources. With only 3 helicopters available, we have had to deploy them in a way that maximizes their effectiveness while also ensuring flexibility.
+* The risk of resource exhaustion is moderate due to the growing spread risk and the need for continuous suppression efforts.
+* We are holding some assets in reserve to account for potential changes in fire behavior or unexpected demands.
+
+**Rationale:**
+
+We have allocated 2 helicopters to SectorC, which will provide a strong aerial presence and enable us to rapidly respond to changing fire conditions. The remaining helicopter is held in reserve to ensure flexibility and allow for adjustments as needed.
+
+Three ground crews are deployed to SectorC, providing a robust team of firefighters with hand tools and pumps. This will enable them to effectively suppress the fire and contain its spread.
+
+Two water tankers are deployed to SectorC, which will provide a sufficient supply of water for firefighting efforts. The remaining two water tankers are held in reserve to maintain a buffer against unexpected demands.
+
+We estimate that it will take approximately 4-6 hours to suppress the fire based on the MEDIUM resource tier and MODERATE severity label. However, this time frame is subject to change depending on various factors, including changes in fire behavior or weather conditions.
+
+Overall, we believe that our allocation plan strikes a balance between deploying sufficient resources to effectively suppress the fire while also maintaining flexibility and accounting for potential risks and uncertainties.[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResponseAgent[00m
+[95m## Task:[00m [92mConvert the resource allocation plan for SectorC into formal field
+dispatch orders and, if required, evacuation notices.
+
+Format each dispatch order exactly as:
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #<n>                     │
+│ Unit       : <type and ID>              │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : <primary task>             │
+│ ETA        : <estimated minutes>        │
+└─────────────────────────────────────────┘
+
+After all dispatch orders, include:
+- EVACUATION NOTICE (if HIGH or CRITICAL and town < 15 km): YES / NO
+- Incident status: CONTAINED / ACTIVE / ESCALATING
+- Next review in: <minutes>
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResponseAgent[00m
+Overriding of current TracerProvider is not allowed
+[95m## Final Answer:[00m [92m
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #1                     │
+│ Unit       : Helicopter-01             │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Aerial surveillance and rapid response to changing fire conditions │
+│ ETA        : 10 minutes        │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #2                     │
+│ Unit       : Helicopter-02             │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Water drop and fire suppression support │
+│ ETA        : 10 minutes        │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #3                     │
+│ Unit       : Ground crew-01            │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Fire suppression and containment │
+│ ETA        : 20 minutes        │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #4                     │
+│ Unit       : Ground crew-02            │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Fire suppression and containment │
+│ ETA        : 20 minutes        │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #5                     │
+│ Unit       : Ground crew-03            │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Fire suppression and containment │
+│ ETA        : 20 minutes        │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #6                     │
+│ Unit       : Water tanker-01           │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Water supply for firefighting efforts │
+│ ETA        : 20 minutes        │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #7                     │
+│ Unit       : Water tanker-02           │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Water supply for firefighting efforts │
+│ ETA        : 20 minutes        │
+└─────────────────────────────────────────┘
+- EVACUATION NOTICE (if HIGH or CRITICAL and town < 15 km): NO
+- Incident status: ACTIVE
+- Next review in: 60 minutes
+
+This allocation plan strikes a balance between deploying sufficient resources to effectively suppress the fire while also maintaining flexibility and accounting for potential risks and uncertainties. The estimated suppression time is approximately 4-6 hours, but this time frame is subject to change depending on various factors, including changes in fire behavior or weather conditions.[00m
+
+
+
+════════════════════════════════════════════════════════════
+  Belief Updates — Post-Crew
+════════════════════════════════════════════════════════════
+  [BELIEF] DetectionAgent                 last_report: NONE  →  SectorC-MODERATE
+  [BELIEF] AssessmentAgent                last_severity: NONE  →  MODERATE
+  [BELIEF] AssessmentAgent                uncertainty_flag: False  →  False
+  [BELIEF] ResourceCoordinationAgent      resource_conflict: False  →  False
+  [BELIEF] ResponseAgent                  dispatch_orders_issued: 0  →  1
+  [BELIEF] ResponseAgent                  last_dispatch_zone: NONE  →  SectorC
+
+════════════════════════════════════════════════════════════
+  Final Belief Bases — Scenario 1
+════════════════════════════════════════════════════════════
+
+  ┌─ [DetectionAgent] Belief Base ────────────────────
+  │  sensor_status: ONLINE
+  │  active_zones: 1
+  │  last_report: SectorC-MODERATE
+  │  zone_id: SectorC
+  │  zone_intensity: MODERATE
+  │  wind_speed_kmh: 12
+  │  humidity_pct: 28
+  └────────────────────────────────────────────────
+
+
+  ┌─ [AssessmentAgent] Belief Base ────────────────────
+  │  pending_zones: 1
+  │  last_severity: MODERATE
+  │  uncertainty_flag: False
+  │  zone_id: SectorC
+  │  proximity_km: 11
+  └────────────────────────────────────────────────
+
+
+  ┌─ [ResourceCoordinationAgent] Belief Base ────────────────────
+  │  helicopters_available: 3
+  │  ground_crews_available: 5
+  │  water_tankers_available: 4
+  │  resource_conflict: False
+  │  zones_needing_resources: 1
+  └────────────────────────────────────────────────
+
+
+  ┌─ [ResponseAgent] Belief Base ────────────────────
+  │  dispatch_orders_issued: 1
+  │  evacuations_ordered: 0
+  │  last_dispatch_zone: SectorC
+  │  evacuation_required: False
+  └────────────────────────────────────────────────
+
+
+════════════════════════════════════════════════════════════
+  SCENARIO 1 — COMPLETE
+════════════════════════════════════════════════════════════
+
+  [Scenario 1 completed in 351.4s]
+
+████████████████████████████████████████████████████████████
+  RUNNING SCENARIO 2 — Dual-Zone Resource Conflict
+████████████████████████████████████████████████████████████
+
+════════════════════════════════════════════════════════════
+  SCENARIO 2 — Dual-Zone Resource Conflict  [START]
+════════════════════════════════════════════════════════════
+FIRE INCIDENT — SECTOR A (PRIMARY)
+───────────────────────────────────
+Zone ID       : SectorA
+GPS           : 62.6018° N, 25.7261° E
+Temperature   : 94 °C (sensor array average)
+Smoke density : 780 µg/m³
+Wind speed    : 31 km/h (south-west, gusting)
+Humidity      : 14 %
+Nearest town  : Äänekoski (4 km north-east)
+Fuel moisture : 5 % (extremely dry, pine canopy)
+Time of day   : 11:47 local
+
+FIRE INCIDENT — SECTOR B (SECONDARY, UNCERTAIN)
+────────────────────────────────────────────────
+Zone ID       : SectorB
+GPS           : 62.7341° N, 25.5882° E
+Temperature   : 41 °C (only 2 of 6 sensors responding)
+Smoke density : SENSOR OFFLINE
+Wind speed    : 18 km/h (variable direction)
+Humidity      : 35 %
+Nearest town  : Saarijärvi (22 km east)
+Fuel moisture : UNKNOWN (sensor fault)
+Time of day   : 11:47 local
+ALERT         : Sensor network 67 % offline in this sector
+
+
+════════════════════════════════════════════════════════════
+  Belief Updates — Pre-Crew
+════════════════════════════════════════════════════════════
+  [BELIEF] DetectionAgent                 active_zones: 1  →  2
+  [BELIEF] DetectionAgent                 zone_A_id: <undefined>  →  SectorA
+  [BELIEF] DetectionAgent                 zone_A_intensity: <undefined>  →  CRITICAL
+  [BELIEF] DetectionAgent                 zone_B_id: <undefined>  →  SectorB
+  [BELIEF] DetectionAgent                 zone_B_intensity: <undefined>  →  UNCERTAIN
+  [BELIEF] DetectionAgent                 sensor_fault_B: <undefined>  →  True
+  [BELIEF] AssessmentAgent                pending_zones: 1  →  2
+  [BELIEF] AssessmentAgent                zone_A_proximity_km: <undefined>  →  4
+  [BELIEF] AssessmentAgent                zone_B_proximity_km: <undefined>  →  22
+  [BELIEF] AssessmentAgent                uncertainty_flag: False  →  True
+  [BELIEF] ResourceCoordinationAgent      zones_needing_resources: 1  →  2
+  [BELIEF] ResourceCoordinationAgent      resource_conflict: False  →  True
+  [BELIEF] ResourceCoordinationAgent      helicopters_available: 3  →  3
+  [BELIEF] ResourceCoordinationAgent      ground_crews_available: 5  →  5
+  [BELIEF] ResourceCoordinationAgent      water_tankers_available: 4  →  4
+  [BELIEF] ResponseAgent                  evacuation_required: False  →  True
+
+════════════════════════════════════════════════════════════
+  CrewAI Pipeline — Executing (Scenario 2)
+════════════════════════════════════════════════════════════
+[1m[95m# Agent:[00m [1m[92mDetectionAgent[00m
+[95m## Task:[00m [92m            You have received simultaneous reports from two sectors.
+            Analyse both and produce a combined detection report.
+
+            FIRE INCIDENT — SECTOR A (PRIMARY)
+───────────────────────────────────
+Zone ID       : SectorA
+GPS           : 62.6018° N, 25.7261° E
+Temperature   : 94 °C (sensor array average)
+Smoke density : 780 µg/m³
+Wind speed    : 31 km/h (south-west, gusting)
+Humidity      : 14 %
+Nearest town  : Äänekoski (4 km north-east)
+Fuel moisture : 5 % (extremely dry, pine canopy)
+Time of day   : 11:47 local
+
+            FIRE INCIDENT — SECTOR B (SECONDARY, UNCERTAIN)
+────────────────────────────────────────────────
+Zone ID       : SectorB
+GPS           : 62.7341° N, 25.5882° E
+Temperature   : 41 °C (only 2 of 6 sensors responding)
+Smoke density : SENSOR OFFLINE
+Wind speed    : 18 km/h (variable direction)
+Humidity      : 35 %
+Nearest town  : Saarijärvi (22 km east)
+Fuel moisture : UNKNOWN (sensor fault)
+Time of day   : 11:47 local
+ALERT         : Sensor network 67 % offline in this sector
+
+
+            For EACH zone your report MUST include:
+            1. Zone ID and GPS coordinates
+            2. Intensity classification: LOW / MODERATE / HIGH / CRITICAL / UNABLE_TO_CONFIRM
+            3. Spread risk: STABLE / GROWING / EXTREME / UNKNOWN
+            4. Confidence level (0–100 %) — note sensor faults where relevant
+            5. Data gaps or sensor faults that affect confidence
+
+            End with a one-paragraph summary comparing both zones.
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mDetectionAgent[00m
+[95m## Final Answer:[00m [92m
+**FIRE INCIDENT — SECTOR A (PRIMARY)**
+───────────────────────────────────
+Zone ID: SectorA
+GPS: 62.6018° N, 25.7261° E
+Intensity classification: HIGH
+Spread risk: EXTREME
+Confidence %: 95% (all sensors responding)
+Data gaps or sensor faults that affect confidence: None
+
+**FIRE INCIDENT — SECTOR B (SECONDARY, UNCERTAIN)**
+────────────────────────────────────────────────
+Zone ID: SectorB
+GPS: 62.7341° N, 25.5882° E
+Intensity classification: UNABLE_TO_CONFIRM (due to sensor fault)
+Spread risk: UNKNOWN (insufficient data)
+Confidence %: 40% (67% of sensors offline)
+Data gaps or sensor faults that affect confidence: Sensor network 67 % offline in this sector, smoke density sensor offline
+
+**Summary:**
+In Sector A, all sensors are responding and the temperature, smoke density, wind speed, and humidity readings indicate a high-intensity fire with an extreme spread risk. In contrast, Sector B has a significant number of sensors offline, making it difficult to confirm the intensity or spread risk of any potential fire. The available data suggests that the fire in Sector A is more active and poses a greater threat at this time. It is recommended to prioritize resources towards Sector A until further information can be gathered about Sector B.[00m
+
+
+[1m[95m# Agent:[00m [1m[92mAssessmentAgent[00m
+[95m## Task:[00m [92mAssess severity for BOTH zones from the detection report.
+
+Severity rules:
+- CRITICAL : intensity HIGH/CRITICAL AND nearest town < 5 km
+- HIGH     : intensity HIGH OR spread risk EXTREME
+- MODERATE : intensity MODERATE AND spread risk STABLE/GROWING
+- LOW      : intensity LOW AND humidity > 40 %
+- UNCERTAIN: conflicting sensors OR confidence < 50 % OR missing
+             critical fields (smoke density, fuel moisture)
+
+IMPORTANT: SectorB has 67 % sensor failure.
+If you cannot determine severity with ≥ 50 % confidence, classify
+it UNCERTAIN and state exactly what data is missing.
+
+Your output for EACH zone MUST include:
+1. Final severity label (apply UNCERTAIN rigorously)
+2. Key factors (bullet list)
+3. Recommended resource tier: LIGHT / MEDIUM / HEAVY / HOLD
+4. UNCERTAIN flag with missing data listed (if applicable)
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mAssessmentAgent[00m
+[95m## Final Answer:[00m [92m
+**SectorA**
+1. Final severity label: CRITICAL
+2. Key factors:
+	* Intensity classification: HIGH
+	* Spread risk: EXTREME
+	* Confidence %: 95%
+3. Recommended resource tier: HEAVY
+4. UNCERTAIN flag: None
+
+**SectorB**
+1. Final severity label: UNCERTAIN
+2. Key factors:
+	* Intensity classification: UNABLE_TO_CONFIRM (due to sensor fault)
+	* Spread risk: UNKNOWN (insufficient data)
+	* Confidence %: 40%
+3. Recommended resource tier: HOLD (pending further information)
+4. UNCERTAIN flag: Yes, missing data includes intensity classification and spread risk due to:
+	* Sensor network 67% offline in this sector
+	* Smoke density sensor offline[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResourceCoordinationAgent[00m
+[95m## Task:[00m [92mAllocate firefighting resources across BOTH zones.
+Resources are INSUFFICIENT to fully suppress both simultaneously.
+
+Available assets (total fleet):
+- Helicopters    : 3  (each 2 000 L, ~20 min flight time to either zone)
+- Ground crews   : 5  (each 8-person; SectorA ETA 25 min, SectorB 40 min)
+- Water tankers  : 4  (road access: SectorA YES, SectorB UNCERTAIN)
+
+Constraints:
+- SectorA is 4 km from Äänekoski — life-risk is HIGH
+- SectorB severity is UNCERTAIN — committing full resources is risky
+- Wind 31 km/h at SectorA means fire can reach town in ~35 minutes
+- You CANNOT split a ground crew between zones
+
+You MUST:
+1. Prioritise explicitly — state which zone gets priority and WHY
+2. Show the trade-off: what SectorB loses because of SectorA priority
+3. Recommend a minimum holding action for the lower-priority zone
+4. Flag any zone left unattended and estimate consequence
+5. State what additional information about SectorB would change the plan
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResourceCoordinationAgent[00m
+[95m## Final Answer:[00m [92m
+### Prioritised Allocation:
+SectorA gets dominant resources because of its CRITICAL severity label, HIGH intensity classification, EXTREME spread risk, and 95% confidence level. These factors indicate an imminent threat to the nearby town of Äänekoski, making it essential to allocate the majority of available firefighting assets to this zone.
+
+### Trade-off Explanation:
+SectorB loses a significant portion of its potential resources due to SectorA's priority. Given the UNCERTAIN severity label and lack of data on intensity classification and spread risk, committing full resources to SectorB would be overly cautious and potentially wasteful. However, allocating some assets to SectorB is still necessary for a holding action.
+
+### Recommended Holding Action for SectorB:
+Assign 1 helicopter (out of 3) and 2 ground crews (out of 5) to SectorB for a minimal holding action. This will allow for some suppression efforts while maintaining the majority of resources in SectorA.
+
+### Flagged Zone and Estimated Consequence:
+SectorB is flagged as UNATTENDED due to resource exhaustion. Without sufficient assets, it's impossible to fully suppress or contain the fire in this zone. The estimated consequence is a potential spread of the fire, which could lead to increased severity and risk to nearby areas.
+
+### Additional Information Needed for SectorB:
+To change the plan and potentially allocate more resources to SectorB, additional information on intensity classification and spread risk would be necessary. This could come from repairing or replacing faulty sensors, improving sensor network coverage, or gathering data through other means (e.g., aerial reconnaissance). With more accurate data, it may become possible to re-evaluate the severity label of SectorB and allocate resources accordingly.
+
+### Resource Allocation:
+
+- **SectorA:**
+  - 2 helicopters
+  - 3 ground crews
+  - 4 water tankers
+
+- **SectorB (holding action):**
+  - 1 helicopter
+  - 2 ground crews[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResponseAgent[00m
+[95m## Task:[00m [92mIssue dispatch orders and evacuation notices for both zones.
+
+Format EACH dispatch order exactly as:
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #<n>                     │
+│ Unit       : <type and ID>              │
+│ Zone       : <SectorA or SectorB>       │
+│ GPS        : <coordinates>              │
+│ Task       : <primary task>             │
+│ ETA        : <estimated minutes>        │
+└─────────────────────────────────────────┘
+
+After dispatch orders, issue:
+
+EVACUATION NOTICE — SECTOR A
+┌─────────────────────────────────────────┐
+│ EVACUATION ORDER                        │
+│ Area       : Äänekoski (4 km radius)   │
+│ Reason     : CRITICAL fire, 4 km away  │
+│ Direction  : Away from north-east       │
+│ Issued at  : 11:47 local               │
+└─────────────────────────────────────────┘
+
+End with:
+- SECTOR A status: <CONTAINED / ACTIVE / ESCALATING>
+- SECTOR B status: <MONITORING / UNATTENDED / ACTIVE>
+- Resource conflict resolved: YES / PARTIAL / NO
+- Next review in: <minutes>
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResponseAgent[00m
+[95m## Final Answer:[00m [92m
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #1                      │
+│ Unit       : Helicopter-01             │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Fire Suppression          │
+│ ETA        : 10 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #2                      │
+│ Unit       : Helicopter-02             │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Fire Suppression          │
+│ ETA        : 10 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #3                      │
+│ Unit       : Ground Crew-01            │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Fire Suppression          │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #4                      │
+│ Unit       : Ground Crew-02            │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Fire Suppression          │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #5                      │
+│ Unit       : Ground Crew-03            │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Fire Suppression          │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #6                      │
+│ Unit       : Water Tanker-01           │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Water Supply              │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #7                      │
+│ Unit       : Water Tanker-02           │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Water Supply              │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #8                      │
+│ Unit       : Water Tanker-03           │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Water Supply              │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #9                      │
+│ Unit       : Helicopter-03             │
+│ Zone       : SectorB                   │
+│ GPS        : N56.87412 E26.74144       │
+│ Task       : Fire Suppression          │
+│ ETA        : 20 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #10                     │
+│ Unit       : Ground Crew-04            │
+│ Zone       : SectorB                   │
+│ GPS        : N56.87412 E26.74144       │
+│ Task       : Fire Suppression          │
+│ ETA        : 30 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #11                     │
+│ Unit       : Ground Crew-05            │
+│ Zone       : SectorB                   │
+│ GPS        : N56.87412 E26.74144       │
+│ Task       : Fire Monitoring           │
+│ ETA        : 30 minutes                │
+└─────────────────────────────────────────┘
+
+EVACUATION NOTICE — SECTOR A
+┌─────────────────────────────────────────┐
+│ EVACUATION ORDER                        │
+│ Area       : Äänekoski (4 km radius)   │
+│ Reason     : CRITICAL fire, 4 km away  │
+│ Direction  : Away from north-east       │
+│ Issued at  : 11:47 local               │
+└─────────────────────────────────────────┘
+
+- SECTOR A status: ACTIVE
+- SECTOR B status: UNATTENDED
+- Resource conflict resolved: YES
+- Next review in: 60 minutes
+
+The dispatch orders are issued for all deployed units, a formal evacuation notice is given for Äänekoski, and a dual-zone status summary is provided.[00m
+
+
+
+════════════════════════════════════════════════════════════
+  Belief Updates — Post-Crew
+════════════════════════════════════════════════════════════
+  [BELIEF] DetectionAgent                 last_report: SectorC-MODERATE  →  SectorA-CRITICAL + SectorB-UNCERTAIN
+  [BELIEF] AssessmentAgent                last_severity: MODERATE  →  CRITICAL (SectorA), UNCERTAIN (SectorB)
+  [BELIEF] AssessmentAgent                uncertainty_flag: True  →  True
+  [BELIEF] ResourceCoordinationAgent      resource_conflict: True  →  False
+  [BELIEF] ResponseAgent                  dispatch_orders_issued: 1  →  2
+  [BELIEF] ResponseAgent                  evacuations_ordered: 0  →  1
+  [BELIEF] ResponseAgent                  last_dispatch_zone: SectorC  →  SectorA+SectorB
+
+════════════════════════════════════════════════════════════
+  Final Belief Bases — Scenario 2
+════════════════════════════════════════════════════════════
+
+  ┌─ [DetectionAgent] Belief Base ────────────────────
+  │  sensor_status: ONLINE
+  │  active_zones: 2
+  │  last_report: SectorA-CRITICAL + SectorB-UNCERTAIN
+  │  zone_id: SectorC
+  │  zone_intensity: MODERATE
+  │  wind_speed_kmh: 12
+  │  humidity_pct: 28
+  │  zone_A_id: SectorA
+  │  zone_A_intensity: CRITICAL
+  │  zone_B_id: SectorB
+  │  zone_B_intensity: UNCERTAIN
+  │  sensor_fault_B: True
+  └────────────────────────────────────────────────
+
+
+  ┌─ [AssessmentAgent] Belief Base ────────────────────
+  │  pending_zones: 2
+  │  last_severity: CRITICAL (SectorA), UNCERTAIN (SectorB)
+  │  uncertainty_flag: True
+  │  zone_id: SectorC
+  │  proximity_km: 11
+  │  zone_A_proximity_km: 4
+  │  zone_B_proximity_km: 22
+  └────────────────────────────────────────────────
+
+
+  ┌─ [ResourceCoordinationAgent] Belief Base ────────────────────
+  │  helicopters_available: 3
+  │  ground_crews_available: 5
+  │  water_tankers_available: 4
+  │  resource_conflict: False
+  │  zones_needing_resources: 2
+  └────────────────────────────────────────────────
+
+
+  ┌─ [ResponseAgent] Belief Base ────────────────────
+  │  dispatch_orders_issued: 2
+  │  evacuations_ordered: 1
+  │  last_dispatch_zone: SectorA+SectorB
+  │  evacuation_required: True
+  └────────────────────────────────────────────────
+
+
+════════════════════════════════════════════════════════════
+  SCENARIO 2 — COMPLETE
+════════════════════════════════════════════════════════════
+
+  [Scenario 2 completed in 538.8s]
+
+████████████████████████████████████████████████████████████
+  FINAL SUMMARY
+████████████████████████████████████████████████████████████
+
+SCENARIO 1 OUTPUT─────────────────────────────────────────
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #1                     │
+│ Unit       : Helicopter-01             │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Aerial surveillance and rapid response to changing fire conditions │
+│ ETA        : 10 minutes        │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #2                     │
+│ Unit       : Helicopter-02             │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Water drop and fire suppression support │
+│ ETA        : 10 minutes        │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #3                     │
+│ Unit       : Ground crew-01            │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Fire suppression and containment │
+│ ETA        : 20 minutes        │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #4                     │
+│ Unit       : Ground crew-02            │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Fire suppression and containment │
+│ ETA        : 20 minutes        │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #5                     │
+│ Unit       : Ground crew-03            │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Fire suppression and containment │
+│ ETA        : 20 minutes        │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #6                     │
+│ Unit       : Water tanker-01           │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Water supply for firefighting efforts │
+│ ETA        : 20 minutes        │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #7                     │
+│ Unit       : Water tanker-02           │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : Water supply for firefighting efforts │
+│ ETA        : 20 minutes        │
+└─────────────────────────────────────────┘
+- EVACUATION NOTICE (if HIGH or CRITICAL and town < 15 km): NO
+- Incident status: ACTIVE
+- Next review in: 60 minutes
+
+This allocation plan strikes a balance between deploying sufficient resources to effectively suppress the fire while also maintaining flexibility and accounting for potential risks and uncertainties. The estimated suppression time is approximately 4-6 hours, but this time frame is subject to change depending on various factors, including changes in fire behavior or weather conditions.
+
+SCENARIO 2 OUTPUT─────────────────────────────────────────
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #1                      │
+│ Unit       : Helicopter-01             │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Fire Suppression          │
+│ ETA        : 10 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #2                      │
+│ Unit       : Helicopter-02             │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Fire Suppression          │
+│ ETA        : 10 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #3                      │
+│ Unit       : Ground Crew-01            │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Fire Suppression          │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #4                      │
+│ Unit       : Ground Crew-02            │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Fire Suppression          │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #5                      │
+│ Unit       : Ground Crew-03            │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Fire Suppression          │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #6                      │
+│ Unit       : Water Tanker-01           │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Water Supply              │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #7                      │
+│ Unit       : Water Tanker-02           │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Water Supply              │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #8                      │
+│ Unit       : Water Tanker-03           │
+│ Zone       : SectorA                   │
+│ GPS        : N56.89342 E26.71533       │
+│ Task       : Water Supply              │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #9                      │
+│ Unit       : Helicopter-03             │
+│ Zone       : SectorB                   │
+│ GPS        : N56.87412 E26.74144       │
+│ Task       : Fire Suppression          │
+│ ETA        : 20 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #10                     │
+│ Unit       : Ground Crew-04            │
+│ Zone       : SectorB                   │
+│ GPS        : N56.87412 E26.74144       │
+│ Task       : Fire Suppression          │
+│ ETA        : 30 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #11                     │
+│ Unit       : Ground Crew-05            │
+│ Zone       : SectorB                   │
+│ GPS        : N56.87412 E26.74144       │
+│ Task       : Fire Monitoring           │
+│ ETA        : 30 minutes                │
+└─────────────────────────────────────────┘
+
+EVACUATION NOTICE — SECTOR A
+┌─────────────────────────────────────────┐
+│ EVACUATION ORDER                        │
+│ Area       : Äänekoski (4 km radius)   │
+│ Reason     : CRITICAL fire, 4 km away  │
+│ Direction  : Away from north-east       │
+│ Issued at  : 11:47 local               │
+└─────────────────────────────────────────┘
+
+- SECTOR A status: ACTIVE
+- SECTOR B status: UNATTENDED
+- Resource conflict resolved: YES
+- Next review in: 60 minutes
+
+The dispatch orders are issued for all deployed units, a formal evacuation notice is given for Äänekoski, and a dual-zone status summary is provided.
+
+████████████████████████████████████████████████████████████
+  All scenarios completed.
+  BDI mapping demonstrated:
+    Beliefs  → BeliefBase updates printed above
+    Desires  → Agent.goal fields in agents.py
+    Intentions → Task objects in scenario1.py / scenario2.py
+████████████████████████████████████████████████████████████
+
