@@ -1,7 +1,5 @@
 # ForestFireMAS — BDI Extension
 
-Second project for **TIES454 Agent Technologies for Developers 2026** (University of Jyväskylä).
-
 Extends the original JADE-based ForestFireMAS with a Python BDI agent system built on **CrewAI** and **Ollama** (local LLMs — no API key or internet required).
 
 ---

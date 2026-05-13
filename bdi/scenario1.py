@@ -19,6 +19,7 @@ BDI cycle visible in this scenario
 import textwrap
 from crewai import Task, Crew, Process
 
+from utils import agent_log
 from agents import (
     detection_agent,
     assessment_agent,
@@ -190,7 +191,9 @@ def run_scenario1() -> str:
         verbose=True,
     )
 
-    result = crew.kickoff()
+    with agent_log("scenario1") as log_path:
+        result = crew.kickoff()
+    print(f"  Agent log saved → {log_path}")
 
     # ── Post-run belief updates ───────────────────────────────────────────────
     print_section("Belief Updates — Post-Crew")
