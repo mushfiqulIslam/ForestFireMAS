@@ -13,7 +13,8 @@ Extends the original JADE-based ForestFireMAS with a Python BDI agent system bui
 | `agents.py` | 4 CrewAI agents with role / goal / backstory — the **D** (Desires) in BDI |
 | `scenario1.py` | Scenario 1: single-zone cooperative pipeline |
 | `scenario2.py` | Scenario 2: dual-zone resource conflict with uncertainty |
-| `main.py` | Entry point — runs one or both scenarios |
+| `scenario3.py` | Scenario 3: cascading multi-zone emergency with belief revision |
+| `main.py` | Entry point — runs one or more scenarios |
 
 ### BDI mapping
 
@@ -34,15 +35,11 @@ Extends the original JADE-based ForestFireMAS with a Python BDI agent system bui
 
 ### Scenarios
 
-**Scenario 1 — Standard Single-Zone Response**
-- One fire detected in SectorC (MODERATE intensity, 11 km from Jyväskylä)
-- All four agents cooperate in sequence: detect → assess → allocate → dispatch
-- Demonstrates the core BDI pipeline with no resource conflict
-
-**Scenario 2 — Dual-Zone Resource Conflict with Uncertainty**
-- Two simultaneous fires: SectorA (CRITICAL, 4 km from Äänekoski) + SectorB (sensors 67 % offline → UNCERTAIN)
-- Resources insufficient to fully suppress both zones
-- Demonstrates: conflict resolution, uncertainty handling, multi-step deliberation, belief revision
+| Scenario | Description |
+|---|---|
+| **Scenario 1 — Standard Single-Zone Response** | One fire detected in SectorC (MODERATE intensity, 11 km from Jyväskylä). All four agents cooperate in sequence: detect → assess → allocate → dispatch. Demonstrates the core BDI pipeline with no resource conflict. |
+| **Scenario 2 — Dual-Zone Resource Conflict with Uncertainty** | Two simultaneous fires: SectorA (CRITICAL, 4 km from Äänekoski) + SectorB (sensors 67 % offline → UNCERTAIN). Resources are insufficient to fully suppress both zones. Demonstrates conflict resolution, uncertainty handling, multi-step deliberation, and belief revision. |
+| **Scenario 3 — Cascading Emergency with Belief Revision** | Three simultaneous fires: SectorD (MODERATE), SectorE (HIGH near Äänekoski hospital), and SectorF (initially LOW). After Phase 1, new 09:52 sensor data escalates SectorF to CRITICAL, revokes the Phase 1 plan, and triggers a second crew run for reassessment, resource replanning, and a new Jyväskylä valley evacuation notice. |
 
 ---
 
@@ -101,7 +98,7 @@ cd bdi/
 source ~/path/to/fireVenv/bin/activate   # adjust path to your venv
 ```
 
-### Run both scenarios
+### Run all scenarios
 
 ```bash
 python main.py
@@ -117,6 +114,12 @@ python main.py --s1
 
 ```bash
 python main.py --s2
+```
+
+### Run Scenario 3 only
+
+```bash
+python main.py --s3
 ```
 
 ---
@@ -149,6 +152,7 @@ bdi/
 ├── agents.py          ← CrewAI Agent definitions
 ├── scenario1.py       ← Single-zone scenario
 ├── scenario2.py       ← Dual-zone conflict scenario
+├── scenario3.py       ← Cascading emergency scenario
 └── main.py            ← Entry point
 ```
 

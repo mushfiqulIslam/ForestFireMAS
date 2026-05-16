@@ -1,12 +1,13 @@
 """
 main.py — ForestFireMAS BDI Entry Point
 
-Runs both scenarios in sequence and prints a final summary.
+Runs all scenarios in sequence and prints a final summary.
 
 Usage:
-    python main.py            # run both scenarios
+    python main.py            # run all scenarios
     python main.py --s1       # run Scenario 1 only
     python main.py --s2       # run Scenario 2 only
+    python main.py --s3       # run Scenario 3 only
 
 Architecture reminder
 ─────────────────────
@@ -17,7 +18,7 @@ Architecture reminder
     DetectionAgent            → mistral
     AssessmentAgent           → llama3.1
     ResourceCoordinationAgent → llama3.1
-    ResponseAgent             → gemma2:9b
+    ResponseAgent             → mistral
 """
 
 import sys
@@ -39,8 +40,11 @@ def run_all() -> None:
     banner()
 
     args = sys.argv[1:]
-    run_s1 = "--s2" not in args or "--s1" in args
-    run_s2 = "--s1" not in args or "--s2" in args
+    scenario_flags = {"--s1", "--s2", "--s3"}
+    requested = scenario_flags.intersection(args)
+    run_s1 = not requested or "--s1" in requested
+    run_s2 = not requested or "--s2" in requested
+    run_s3 = not requested or "--s3" in requested
 
     results = {}
 
@@ -66,6 +70,17 @@ def run_all() -> None:
         elapsed2 = time.time() - t0
         print(f"\n  [Scenario 2 completed in {elapsed2:.1f}s]")
 
+    # ── Scenario 3 ────────────────────────────────────────────────────────────
+    if run_s3:
+        print(f"\n{DIVIDER_HEAVY}")
+        print("  RUNNING SCENARIO 3 — Cascading Emergency with Belief Revision")
+        print(DIVIDER_HEAVY)
+        from scenario3 import run_scenario3
+        t0 = time.time()
+        results["scenario3"] = run_scenario3()
+        elapsed3 = time.time() - t0
+        print(f"\n  [Scenario 3 completed in {elapsed3:.1f}s]")
+
     # ── Final summary ─────────────────────────────────────────────────────────
     print()
     print(DIVIDER_HEAVY)
@@ -80,13 +95,17 @@ def run_all() -> None:
         print(f"\n{'SCENARIO 2 OUTPUT':─<58}")
         print(results["scenario2"])
 
+    if "scenario3" in results:
+        print(f"\n{'SCENARIO 3 OUTPUT':─<58}")
+        print(results["scenario3"])
+
     print()
     print(DIVIDER_HEAVY)
     print("  All scenarios completed.")
     print("  BDI mapping demonstrated:")
     print("    Beliefs  → BeliefBase updates printed above")
     print("    Desires  → Agent.goal fields in agents.py")
-    print("    Intentions → Task objects in scenario1.py / scenario2.py")
+    print("    Intentions → Task objects in scenario1.py / scenario2.py / scenario3.py")
     print(DIVIDER_HEAVY)
     print()
 

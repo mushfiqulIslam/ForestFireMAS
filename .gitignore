@@ -40,3 +40,4 @@ env/
 # CrewAI / LangChain cache
 .cache/
 chroma_db/
+.crewai-storage/
