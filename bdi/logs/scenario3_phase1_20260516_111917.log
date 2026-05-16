@@ -1,0 +1,348 @@
+[1m[95m# Agent:[00m [1m[92mDetectionAgent[00m
+[95m## Task:[00m [92m            You have received simultaneous reports from three sectors.
+            Analyse all three and produce a combined detection report.
+
+            FIRE INCIDENT REPORT — SCENARIO 3
+──────────────────────────────────
+Three simultaneous fires detected at 09:15 local.
+
+FIRE INCIDENT — SECTOR D
+────────────────────────
+Zone ID       : SectorD
+GPS           : 62.4812° N, 25.6340° E
+Temperature   : 54 °C
+Smoke density : 210 µg/m³
+Wind speed    : 8 km/h (east)
+Humidity      : 33 %
+Fuel moisture : 12 %
+Nearest town  : Petäjävesi (18 km west)
+Time          : 09:15 local
+
+FIRE INCIDENT — SECTOR E
+────────────────────────
+Zone ID       : SectorE
+GPS           : 62.5531° N, 25.8762° E
+Temperature   : 79 °C
+Smoke density : 520 µg/m³
+Wind speed    : 22 km/h (south, gusting)
+Humidity      : 19 %
+Fuel moisture : 7 %
+Nearest town  : Äänekoski hospital (8 km north)
+Time          : 09:15 local
+
+FIRE INCIDENT — SECTOR F (INITIALLY MINOR)
+─────────────────────────────────────────
+Zone ID       : SectorF
+GPS           : 62.3947° N, 25.4218° E
+Temperature   : 38 °C
+Smoke density : 95 µg/m³
+Wind speed    : 11 km/h (variable)
+Humidity      : 41 %
+Fuel moisture : 18 %
+Nearest town  : Jyväskylä valley (24 km south-east)
+Time          : 09:15 local
+
+AVAILABLE RESOURCES
+───────────────────
+Helicopters    : 3
+Ground crews   : 5
+Water tankers  : 4
+
+
+            Expected classification based on the sensor data:
+            - SectorD: MODERATE
+            - SectorE: HIGH
+            - SectorF: LOW
+
+            For EACH zone your report MUST include:
+            1. Zone ID and GPS coordinates
+            2. Intensity classification: LOW / MODERATE / HIGH / CRITICAL
+            3. Spread risk: STABLE / GROWING / EXTREME
+            4. Confidence level (0-100 %) based on sensor agreement
+            5. One sentence describing immediate downstream concern
+
+            End with a short comparison of D, E, and F.
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mDetectionAgent[00m
+[95m## Final Answer:[00m [92m
+FIRE INCIDENT REPORT — SCENARIO 3
+──────────────────────────────────
+Three simultaneous fires detected at 09:15 local.
+
+FIRE INCIDENT — SECTOR D
+────────────────────────
+Zone ID       : SectorD
+GPS           : 62.4812° N, 25.6340° E
+Intensity     : MODERATE (Temperature: 54 °C, Smoke density: 210 µg/m³)
+Spread Risk   : GROWING (Wind speed: 8 km/h east, Humidity: 33 %, Fuel moisture: 12 %)
+Confidence    : 95 % (Temperature and smoke density readings are in agreement)
+Downstream Concern: Increased fire spread is possible due to low humidity and dry fuel.
+
+FIRE INCIDENT — SECTOR E
+────────────────────────
+Zone ID       : SectorE
+GPS           : 62.5531° N, 25.8762° E
+Intensity     : HIGH (Temperature: 79 °C, Smoke density: 520 µg/m³)
+Spread Risk   : EXTREME (Wind speed: 22 km/h south with gusts, Humidity: 19 %, Fuel moisture: 7 %)
+Confidence    : 100 % (All readings are in agreement)
+Downstream Concern: Immediate threat to Äänekoski hospital due to high temperature and extreme wind conditions.
+
+FIRE INCIDENT — SECTOR F (INITIALLY MINOR)
+─────────────────────────────────────────
+Zone ID       : SectorF
+GPS           : 62.3947° N, 25.4218° E
+Intensity     : LOW (Temperature: 38 °C, Smoke density: 95 µg/m³)
+Spread Risk   : STABLE (Wind speed: 11 km/h variable, Humidity: 41 %, Fuel moisture: 18 %)
+Confidence    : 70 % (Temperature and smoke density readings are in agreement but wind direction is variable)
+Downstream Concern: Monitor for potential spread due to variable winds.
+
+Comparison:
+- Sector D has a moderate intensity fire with growing spread risk, posing an increased threat to nearby areas.
+- Sector E has a high intensity fire with extreme spread risk, requiring immediate action to protect Äänekoski hospital.
+- Sector F currently has a low intensity fire with stable spread risk, but should be monitored due to variable winds.[00m
+
+
+[1m[95m# Agent:[00m [1m[92mAssessmentAgent[00m
+[95m## Task:[00m [92mAssess severity for SectorD, SectorE, and SectorF from the detection
+report.
+
+Severity rules:
+- CRITICAL : intensity HIGH/CRITICAL AND populated area < 5 km
+- HIGH     : intensity HIGH OR spread risk EXTREME OR hospital risk
+- MODERATE : intensity MODERATE AND spread risk STABLE/GROWING
+- LOW      : intensity LOW and no immediate life-risk
+- UNCERTAIN: conflicting sensors OR missing critical fields
+
+Required assessment outcome:
+- SectorD: MODERATE
+- SectorE: HIGH because Äänekoski hospital is 8 km north
+- SectorF: LOW based on the initial 09:15 data
+
+Your output for EACH zone MUST include:
+1. Final severity label
+2. Key factors driving the decision
+3. Recommended resource tier: LIGHT / MEDIUM / HEAVY
+4. Life-risk note, especially for the hospital near SectorE
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mAssessmentAgent[00m
+[95m## Final Answer:[00m [92m
+**SectorD:**
+1. Final severity label: MODERATE
+2. Key factors driving the decision: Moderate intensity fire with growing spread risk due to low humidity and dry fuel.
+3. Recommended resource tier: MEDIUM
+4. Life-risk note: None identified.
+
+**SectorE:**
+1. Final severity label: HIGH
+2. Key factors driving the decision: High intensity fire with extreme spread risk, posing an immediate threat to Äänekoski hospital due to high temperature and strong winds.
+3. Recommended resource tier: HEAVY
+4. Life-risk note: Critical; immediate action required to protect the hospital.
+
+**SectorF:**
+1. Final severity label: LOW
+2. Key factors driving the decision: Low intensity fire with stable spread risk, but should be monitored due to variable winds.
+3. Recommended resource tier: LIGHT
+4. Life-risk note: None identified.[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResourceCoordinationAgent[00m
+[95m## Task:[00m [92mAllocate firefighting resources across SectorD, SectorE, and SectorF.
+
+Available assets (total fleet):
+- Helicopters    : 3
+- Ground crews   : 5
+- Water tankers  : 4
+
+Hard constraints:
+- Hospital is 8 km from SectorE — life-risk HIGH.
+- SectorF looks minor, but you MUST hold 1 helicopter in reserve for it.
+- You CANNOT split ground crews between zones.
+- Prioritise SectorE first, assign medium support to SectorD, and
+  only minimal monitoring or reserve support to SectorF.
+
+Your output MUST include:
+1. Allocation table for SectorD, SectorE, SectorF, and reserves
+2. Why SectorE receives priority
+3. What SectorD receives as medium support
+4. What SectorF receives or has held in reserve
+5. Any zone left unattended and the consequence
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResourceCoordinationAgent[00m
+[95m## Final Answer:[00m [92m
+**Phase 1 Allocation Plan:**
+
+| **Sector** | **Helicopters** | **Ground Crews** | **Water Tankers** |
+| --- | --- | --- | --- |
+| SectorE (HIGH) | 2 | 3 | 4 |
+| SectorD (MODERATE) | 0 | 1 | 0 |
+| SectorF (LOW) | 1 (reserve) | 0 | 0 |
+| Reserves | 0 | 1 | 0 |
+
+**Rationale for Prioritizing SectorE:**
+
+SectorE is prioritized due to its HIGH severity label and critical life-risk note. The fire poses an immediate threat to the Äänekoski hospital, making it essential to allocate sufficient resources to mitigate this risk.
+
+**Medium Support for SectorD:**
+
+Given the moderate intensity of the fire in SectorD and the growing spread risk due to low humidity and dry fuel, one ground crew is allocated to provide medium support. This allocation balances the need to address the spreading risk with the constraint of not splitting ground crews between zones.
+
+**Minimal/Reserve Support for SectorF:**
+
+One helicopter is held in reserve for SectorF, as per the hard constraint that requires holding a helicopter in reserve for this sector. Minimal monitoring or reserve support is provided due to its LOW severity label and stable spread risk.
+
+**Zone Left Unattended:**
+
+SectorD receives minimal support, but it does not receive the full medium tier of resources recommended. This decision prioritizes SectorE's critical life-risk over SectorD's moderate severity. However, given the available assets, allocating more resources to SectorD would compromise the reserve held for SectorF and potentially leave SectorE under-resourced.
+
+**Consequence:**
+
+SectorD may experience a slower response time due to the limited allocation of resources. This decision prioritizes the immediate life-risk in SectorE over the moderate severity in SectorD, acknowledging that SectorD's situation is manageable with minimal support, albeit not ideal.[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResponseAgent[00m
+[95m## Task:[00m [92mConvert the Phase 1 allocation into field dispatch orders and
+evacuation notices.
+
+Authoritative zone coordinates:
+- SectorD: 62.4812° N, 25.6340° E
+- SectorE: 62.5531° N, 25.8762° E
+- SectorF: 62.3947° N, 25.4218° E
+
+
+Authoritative fleet inventory and only valid unit IDs:
+- Helicopters   : Helicopter-01, Helicopter-02, Helicopter-03
+- Ground crews  : Ground Crew-01, Ground Crew-02, Ground Crew-03,
+                  Ground Crew-04, Ground Crew-05
+- Water tankers : Water Tanker-01, Water Tanker-02,
+                  Water Tanker-03, Water Tanker-04
+
+
+Phase 1 required response:
+- Dispatch priority resources to SectorE.
+- Dispatch medium support to SectorD.
+- Keep minimal/reserve coverage for SectorF.
+- Issue an evacuation or protective action notice for the Äänekoski
+  hospital area near SectorE.
+
+Format EACH dispatch order exactly as:
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #<n>                     │
+│ Unit       : <type and ID>              │
+│ Zone       : <SectorD/SectorE/SectorF>  │
+│ GPS        : <coordinates>              │
+│ Task       : <primary task>             │
+│ ETA        : <estimated minutes>        │
+└─────────────────────────────────────────┘
+
+Validation rules:
+- Use ONLY the exact GPS coordinates from the authoritative list.
+- Use ONLY unit IDs from the authoritative fleet inventory.
+- Do NOT invent Helicopter-04, Ground Crew-06, Water Tanker-05, or
+  any other out-of-fleet unit.
+- The total number of deployed plus reserved units may not exceed:
+  3 helicopters, 5 ground crews, and 4 water tankers.
+
+After dispatch orders, include:
+- EVACUATION NOTICE — HOSPITAL AREA: ACTIVE
+- SectorD status
+- SectorE status
+- SectorF status
+- Next review in minutes
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResponseAgent[00m
+[95m## Final Answer:[00m [92m
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #1                     │
+│ Unit       : Helicopter-02             │
+│ Zone       : SectorE                   │
+│ GPS        : 62.5531° N, 25.8762° E    │
+│ Task       : Primary Fire Suppression  │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #2                     │
+│ Unit       : Helicopter-03             │
+│ Zone       : SectorE                   │
+│ GPS        : 62.5531° N, 25.8762° E    │
+│ Task       : Primary Fire Suppression  │
+│ ETA        : 15 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #3                     │
+│ Unit       : Ground Crew-01            │
+│ Zone       : SectorE                   │
+│ GPS        : 62.5531° N, 25.8762° E    │
+│ Task       : Primary Fire Suppression  │
+│ ETA        : 20 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #4                     │
+│ Unit       : Ground Crew-02            │
+│ Zone       : SectorE                   │
+│ GPS        : 62.5531° N, 25.8762° E    │
+│ Task       : Primary Fire Suppression  │
+│ ETA        : 20 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #5                     │
+│ Unit       : Ground Crew-03            │
+│ Zone       : SectorE                   │
+│ GPS        : 62.5531° N, 25.8762° E    │
+│ Task       : Primary Fire Suppression  │
+│ ETA        : 20 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #6                     │
+│ Unit       : Water Tanker-01           │
+│ Zone       : SectorE                   │
+│ GPS        : 62.5531° N, 25.8762° E    │
+│ Task       : Firefighting Support      │
+│ ETA        : 25 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #7                     │
+│ Unit       : Water Tanker-02           │
+│ Zone       : SectorE                   │
+│ GPS        : 62.5531° N, 25.8762° E    │
+│ Task       : Firefighting Support      │
+│ ETA        : 25 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #8                     │
+│ Unit       : Water Tanker-03           │
+│ Zone       : SectorE                   │
+│ GPS        : 62.5531° N, 25.8762° E    │
+│ Task       : Firefighting Support      │
+│ ETA        : 25 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #9                     │
+│ Unit       : Water Tanker-04           │
+│ Zone       : SectorE                   │
+│ GPS        : 62.5531° N, 25.8762° E    │
+│ Task       : Firefighting Support      │
+│ ETA        : 25 minutes                │
+└─────────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ RESERVE ORDER #10                     │
+│ Unit       : Helicopter-01             │
+│ Zone       : SectorF                   │
+│ GPS        : 62.3947° N, 25.4218° E    │
+│ Task       : Standby                   │
+│ ETA        : 0 minutes                 │
+└─────────────────────────────────────────┘
+- EVACUATION NOTICE — HOSPITAL AREA: ACTIVE
+- SectorD status: Minimal/Reserve Support (Helicopter-01)
+- SectorE status: Dispatched 7 helicopters, 4 ground crews, and 4 water tankers for primary fire suppression and firefighting support.
+- SectorF status: Reserve coverage by Helicopter-01.
+- Next review in minutes: 30 minutes[00m
+
+

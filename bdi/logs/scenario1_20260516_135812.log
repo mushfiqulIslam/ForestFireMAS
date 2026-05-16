@@ -1,0 +1,174 @@
+[1m[95m# Agent:[00m [1m[92mDetectionAgent[00m
+[95m## Task:[00m [92m            You have received the following raw sensor data. Analyse it and produce
+            a structured detection report.
+
+            FIRE INCIDENT REPORT — SCENARIO 1
+──────────────────────────────────
+Zone ID       : SectorC
+GPS           : 62.2426° N, 25.7473° E
+Temperature   : 68 °C (sensor array average)
+Smoke density : 340 µg/m³
+Wind speed    : 12 km/h (north-east)
+Humidity      : 28 %
+Nearest town  : Jyväskylä (11 km south-west)
+Fuel moisture : 9 % (dry understory)
+Time of day   : 14:32 local
+
+
+            Your report MUST include:
+            1. Confirmed zone ID and GPS coordinates
+            2. Intensity classification: LOW / MODERATE / HIGH / CRITICAL
+            3. Spread risk assessment: STABLE / GROWING / EXTREME
+            4. Confidence level (0–100 %) based on sensor agreement
+            5. One-sentence summary for downstream agents
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mDetectionAgent[00m
+[95m## Final Answer:[00m [92m
+FIRE INCIDENT REPORT — SCENARIO 1
+──────────────────────────────────
+Zone ID: SectorC
+GPS: 62.2426° N, 25.7473° E
+Intensity Classification: MODERATE (Temperature: 68 °C, Smoke density: 340 µg/m³)
+Spread Risk Assessment: GROWING (Dry understory with low fuel moisture and moderate smoke density)
+Confidence Level (0–100 %): 95% (Based on sensor agreement)
+One-sentence summary for downstream agents: A moderately intense fire in SectorC is growing, with dry underbrush and a moderate smoke plume. Evacuation and containment efforts are recommended.[00m
+
+
+[1m[95m# Agent:[00m [1m[92mAssessmentAgent[00m
+[95m## Task:[00m [92mReview the detection report from DetectionAgent for SectorC.
+Apply wildfire severity classification rules and produce an assessment.
+
+Severity rules (apply all that match, take the highest):
+- CRITICAL : intensity HIGH/CRITICAL AND nearest town < 5 km
+- HIGH     : intensity HIGH OR spread risk EXTREME
+- MODERATE : intensity MODERATE AND spread risk STABLE/GROWING
+- LOW      : intensity LOW AND humidity > 40 %
+- UNCERTAIN: conflicting sensors OR missing key fields
+
+Your output MUST include:
+1. Final severity label
+2. Key factors driving the decision (bullet list)
+3. Recommended resource tier: LIGHT / MEDIUM / HEAVY
+4. Any UNCERTAIN flags and what data is missing
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mAssessmentAgent[00m
+[95m## Final Answer:[00m [92m
+#### SectorC Severity Assessment
+**Final Severity Label:** MODERATE
+**Key Factors Driving the Decision:**
+• Intensity Classification: MODERATE (Temperature: 68 °C, Smoke density: 340 µg/m³)
+• Spread Risk Assessment: GROWING (Dry understory with low fuel moisture and moderate smoke density)
+#### Recommended Resource Tier: MEDIUM
+#### Uncertainty Flags:
+None. All key fields are present and sensor data is consistent.
+
+This assessment reflects the application of wildfire severity rules, considering both intensity and spread risk factors. The fire in SectorC is classified as MODERATE due to its growing nature and moderate smoke plume, but does not meet the criteria for HIGH or CRITICAL severity.[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResourceCoordinationAgent[00m
+[95m## Task:[00m [92mAllocate firefighting resources for SectorC based on the assessment.
+
+Available assets (current inventory):
+- Helicopters    : 3  (each can carry 2 000 L water)
+- Ground crews   : 5  (each 8-person team with hand tools + pump)
+- Water tankers  : 4  (each 10 000 L capacity)
+
+There is only ONE active zone (SectorC). No resource conflict exists.
+Allocate what is proportionate to the assessed severity tier.
+
+Your output MUST include:
+1. Assets assigned to SectorC (unit type + quantity)
+2. Assets held in reserve (with reason)
+3. Estimated suppression time
+4. Any constraints or risks to the plan
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResourceCoordinationAgent[00m
+[95m## Final Answer:[00m [92m
+**Allocation Table**
+
+| Asset Type | Quantity Deployed | Quantity Held in Reserve |
+| --- | --- | --- |
+| Helicopters | 2 | 1 (held in reserve due to potential need for rapid response) |
+| Ground Crews | 4 | 1 (held in reserve to ensure adequate personnel for suppression efforts) |
+| Water Tankers | 3 | 1 (held in reserve to maintain flexibility and respond to changing fire conditions) |
+
+**Estimated Suppression Time:** Based on the recommended resource tier, MEDIUM, and considering the MODERATE severity of the fire, we estimate a suppression time of approximately 6-8 hours. This assumes optimal deployment and execution of resources.
+
+**Constraints or Risks:**
+
+* Limited availability of helicopters for reconnaissance and water-bombing missions.
+* Potential for ground crews to be overwhelmed by the growing spread risk if not adequately supported by air assets.
+* Water tanker capacity may not be sufficient to fully contain the fire, requiring strategic deployment and potential reinforcement.
+
+The allocation plan prioritizes the deployment of resources based on the recommended resource tier, MEDIUM. The MODERATE severity label indicates a moderate level of intensity and growing spread risk, which warrants a balanced approach to suppression efforts. By holding one helicopter, ground crew, and water tanker in reserve, we maintain flexibility to respond to changing fire conditions while ensuring adequate personnel and equipment for initial suppression efforts.[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResponseAgent[00m
+[95m## Task:[00m [92mConvert the resource allocation plan for SectorC into formal field
+dispatch orders and, if required, evacuation notices.
+
+Format each dispatch order exactly as:
+┌─────────────────────────────────────────┐
+│ DISPATCH ORDER #<n>                     │
+│ Unit       : <type and ID>              │
+│ Zone       : SectorC                    │
+│ GPS        : 62.2426° N, 25.7473° E    │
+│ Task       : <primary task>             │
+│ ETA        : <estimated minutes>        │
+└─────────────────────────────────────────┘
+
+After all dispatch orders, include:
+- EVACUATION NOTICE (if HIGH or CRITICAL and town < 15 km): YES / NO
+- Incident status: CONTAINED / ACTIVE / ESCALATING
+- Next review in: <minutes>
+[00m
+
+
+[1m[95m# Agent:[00m [1m[92mResponseAgent[00m
+[95m## Final Answer:[00m [92m
+DISPATCH ORDER #1
+Unit       : Helicopter-01 (Reconnaissance and Water-Bombing)
+Zone       : SectorC
+GPS        : 62.2426° N, 25.7473° E
+Task       : Reconnaissance and Water-Bombing
+ETA        : 15 minutes
+
+DISPATCH ORDER #2
+Unit       : Ground Crew-01 (Fire Suppression)
+Zone       : SectorC
+GPS        : 62.2426° N, 25.7473° E
+Task       : Fire Suppression
+ETA        : 30 minutes
+
+DISPATCH ORDER #3
+Unit       : Ground Crew-02 (Fire Suppression)
+Zone       : SectorC
+GPS        : 62.2426° N, 25.7473° E
+Task       : Fire Suppression
+ETA        : 30 minutes
+
+DISPATCH ORDER #4
+Unit       : Ground Crew-03 (Fire Suppression)
+Zone       : SectorC
+GPS        : 62.2426° N, 25.7473° E
+Task       : Fire Suppression
+ETA        : 30 minutes
+
+DISPATCH ORDER #5
+Unit       : Water Tanker-01 (Fire Suppression)
+Zone       : SectorC
+GPS        : 62.2426° N, 25.7473° E
+Task       : Fire Suppression
+ETA        : 45 minutes
+
+EVACUATION NOTICE (if HIGH or CRITICAL and town < 15 km): YES
+Incident status: ACTIVE
+Next review in: 60 minutes[00m
+
+

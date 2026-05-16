@@ -1,0 +1,195 @@
+[1m[95m# Agent:[00m [1m[92mDetectionAgent[00m
+[95m## Task:[00m [92m            You have received simultaneous reports from three sectors.
+            Analyse all three and produce a combined detection report.
+
+            FIRE INCIDENT REPORT — SCENARIO 3
+──────────────────────────────────
+Three simultaneous fires detected at 09:15 local.
+
+FIRE INCIDENT — SECTOR D
+────────────────────────
+Zone ID       : SectorD
+GPS           : 62.4812° N, 25.6340° E
+Temperature   : 54 °C
+Smoke density : 210 µg/m³
+Wind speed    : 8 km/h (east)
+Humidity      : 33 %
+Fuel moisture : 12 %
+Nearest town  : Petäjävesi (18 km west)
+Time          : 09:15 local
+
+FIRE INCIDENT — SECTOR E
+────────────────────────
+Zone ID       : SectorE
+GPS           : 62.5531° N, 25.8762° E
+Temperature   : 79 °C
+Smoke density : 520 µg/m³
+Wind speed    : 22 km/h (south, gusting)
+Humidity      : 19 %
+Fuel moisture : 7 %
+Nearest town  : Äänekoski hospital (8 km north)
+Time          : 09:15 local
+
+FIRE INCIDENT — SECTOR F (INITIALLY MINOR)
+─────────────────────────────────────────
+Zone ID       : SectorF
+GPS           : 62.3947° N, 25.4218° E
+Temperature   : 38 °C
+Smoke density : 95 µg/m³
+Wind speed    : 11 km/h (variable)
+Humidity      : 41 %
+Fuel moisture : 18 %
+Nearest town  : Jyväskylä valley (24 km south-east)
+Time          : 09:15 local
+
+AVAILABLE RESOURCES
+───────────────────
+Helicopters    : 3
+Ground crews   : 5
+Water tankers  : 4
+
+
+            Expected classification based on the sensor data:
+            - SectorD: MODERATE
+            - SectorE: HIGH
+            - SectorF: LOW
+
+            For EACH zone your report MUST include:
+            1. Zone ID and GPS coordinates
+            2. Intensity classification: LOW / MODERATE / HIGH / CRITICAL
+            3. Spread risk: STABLE / GROWING / EXTREME
+            4. Confidence level (0-100 %) based on sensor agreement
+            5. One sentence describing immediate downstream concern
+
+            End with a short comparison of D, E, and F.
+[00m
+[1m[95m# Agent:[00m [1m[92mDetectionAgent[00m
+[95m## Task:[00m [92m            You have received simultaneous reports from three sectors.
+            Analyse all three and produce a combined detection report.
+
+            FIRE INCIDENT REPORT — SCENARIO 3
+──────────────────────────────────
+Three simultaneous fires detected at 09:15 local.
+
+FIRE INCIDENT — SECTOR D
+────────────────────────
+Zone ID       : SectorD
+GPS           : 62.4812° N, 25.6340° E
+Temperature   : 54 °C
+Smoke density : 210 µg/m³
+Wind speed    : 8 km/h (east)
+Humidity      : 33 %
+Fuel moisture : 12 %
+Nearest town  : Petäjävesi (18 km west)
+Time          : 09:15 local
+
+FIRE INCIDENT — SECTOR E
+────────────────────────
+Zone ID       : SectorE
+GPS           : 62.5531° N, 25.8762° E
+Temperature   : 79 °C
+Smoke density : 520 µg/m³
+Wind speed    : 22 km/h (south, gusting)
+Humidity      : 19 %
+Fuel moisture : 7 %
+Nearest town  : Äänekoski hospital (8 km north)
+Time          : 09:15 local
+
+FIRE INCIDENT — SECTOR F (INITIALLY MINOR)
+─────────────────────────────────────────
+Zone ID       : SectorF
+GPS           : 62.3947° N, 25.4218° E
+Temperature   : 38 °C
+Smoke density : 95 µg/m³
+Wind speed    : 11 km/h (variable)
+Humidity      : 41 %
+Fuel moisture : 18 %
+Nearest town  : Jyväskylä valley (24 km south-east)
+Time          : 09:15 local
+
+AVAILABLE RESOURCES
+───────────────────
+Helicopters    : 3
+Ground crews   : 5
+Water tankers  : 4
+
+
+            Expected classification based on the sensor data:
+            - SectorD: MODERATE
+            - SectorE: HIGH
+            - SectorF: LOW
+
+            For EACH zone your report MUST include:
+            1. Zone ID and GPS coordinates
+            2. Intensity classification: LOW / MODERATE / HIGH / CRITICAL
+            3. Spread risk: STABLE / GROWING / EXTREME
+            4. Confidence level (0-100 %) based on sensor agreement
+            5. One sentence describing immediate downstream concern
+
+            End with a short comparison of D, E, and F.
+[00m
+[1m[95m# Agent:[00m [1m[92mDetectionAgent[00m
+[95m## Task:[00m [92m            You have received simultaneous reports from three sectors.
+            Analyse all three and produce a combined detection report.
+
+            FIRE INCIDENT REPORT — SCENARIO 3
+──────────────────────────────────
+Three simultaneous fires detected at 09:15 local.
+
+FIRE INCIDENT — SECTOR D
+────────────────────────
+Zone ID       : SectorD
+GPS           : 62.4812° N, 25.6340° E
+Temperature   : 54 °C
+Smoke density : 210 µg/m³
+Wind speed    : 8 km/h (east)
+Humidity      : 33 %
+Fuel moisture : 12 %
+Nearest town  : Petäjävesi (18 km west)
+Time          : 09:15 local
+
+FIRE INCIDENT — SECTOR E
+────────────────────────
+Zone ID       : SectorE
+GPS           : 62.5531° N, 25.8762° E
+Temperature   : 79 °C
+Smoke density : 520 µg/m³
+Wind speed    : 22 km/h (south, gusting)
+Humidity      : 19 %
+Fuel moisture : 7 %
+Nearest town  : Äänekoski hospital (8 km north)
+Time          : 09:15 local
+
+FIRE INCIDENT — SECTOR F (INITIALLY MINOR)
+─────────────────────────────────────────
+Zone ID       : SectorF
+GPS           : 62.3947° N, 25.4218° E
+Temperature   : 38 °C
+Smoke density : 95 µg/m³
+Wind speed    : 11 km/h (variable)
+Humidity      : 41 %
+Fuel moisture : 18 %
+Nearest town  : Jyväskylä valley (24 km south-east)
+Time          : 09:15 local
+
+AVAILABLE RESOURCES
+───────────────────
+Helicopters    : 3
+Ground crews   : 5
+Water tankers  : 4
+
+
+            Expected classification based on the sensor data:
+            - SectorD: MODERATE
+            - SectorE: HIGH
+            - SectorF: LOW
+
+            For EACH zone your report MUST include:
+            1. Zone ID and GPS coordinates
+            2. Intensity classification: LOW / MODERATE / HIGH / CRITICAL
+            3. Spread risk: STABLE / GROWING / EXTREME
+            4. Confidence level (0-100 %) based on sensor agreement
+            5. One sentence describing immediate downstream concern
+
+            End with a short comparison of D, E, and F.
+[00m
